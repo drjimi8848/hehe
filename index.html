@@ -1,0 +1,59 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Dynamic Image Resizing</title>
+  <style>
+    canvas {
+      background-color: #f9f9f9;
+      display: block;
+      margin: 20px auto;
+    }
+  </style>
+</head>
+<body>
+  <canvas id="myCanvas" width="300" height="300"></canvas>
+  <canvas id="myCanvas" width="300" height="300"></canvas>
+  <canvas id="myCanvas" width="300" height="300"></canvas>
+
+
+  <script>
+    const canvas = document.getElementById("myCanvas");
+    const ctx = canvas.getContext("2d");
+
+    const img = new Image();
+    img.src = "heart.webp"; // Replace with your image URL
+
+    let size = 50; // Initial size
+    let growing = true; // Indicates whether the size is increasing or decreasing
+
+    function resizeImage() {
+      ctx.clearRect(0, 0, canvas.width, canvas.height); // Clear canvas
+
+      // Draw the image with the current size
+      ctx.drawImage(img, 150 - size / 2, 150 - size / 2, size, size);
+
+      // Update size
+      if (growing) {
+        size += 2;
+        if (size >= 350) { // Max size reached, start shrinking
+          growing = false;
+        }
+      } else {
+        size -= 2;
+        if (size <= 0) { // Min size reached, start growing
+          growing = true;
+        }
+      }
+
+      requestAnimationFrame(resizeImage); // Loop the animation
+    }
+
+    // Start the animation loop after the image is loaded
+    img.onload = () => {
+      resizeImage();
+    };
+  </script>
+</body>
+</html>
